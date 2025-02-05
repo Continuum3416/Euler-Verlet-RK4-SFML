@@ -18,7 +18,6 @@ constexpr float EPSILON              = 1e-4f;    // tolerance
 constexpr float ENERGY_LOST_FACTOR   = 1.f - RESTITUTION * RESTITUTION;
 const sf::Vector2f ACCELERATION      = SCALE * sf::Vector2f{0.f, g_f};
 
-
 // Abstract class
 class Ball {
 protected:
@@ -35,7 +34,7 @@ protected:
         circleObject.setOrigin(radius, radius);
         circleObject.setPosition(init_position);
         setColor();
-        setStepSize(1.f / 120.f);
+        setStepSize(1.f/120.f);
     }
 public:
     const float  radius;
@@ -58,6 +57,11 @@ public:
     [[nodiscard]] float getStepSize() const
     {
         return deltaTime;
+    }
+
+    [[nodiscard]] sf::Color getColor() const
+    {
+        return circleObject.getFillColor();
     }
 
     void drawPath(sf::RenderWindow& window) 

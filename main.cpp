@@ -29,10 +29,10 @@ int main(int argc, char* argv[]) {
     
     // Initialize ball settings
     std::vector<VerletBall> balls;
-    const float spawn_delay          = 0.05f;
+    const float spawn_delay          = 0.025f;
     const float initial_speed        = 10.f;              // Ball speed in m/s
     const sf::Vector2f spawn_position{40.f, 150.f};
-    const uint32_t max_balls         = 500;
+    const uint32_t max_balls         = 1300;
     balls.reserve(max_balls);
 
     // FPS calculations
@@ -44,6 +44,9 @@ int main(int argc, char* argv[]) {
     sf::Clock fps_clock;
     sf::Clock total_time_clock;
 
+    // Create a single ball model (a template shape to reuse)
+    sf::CircleShape ballModel;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -53,7 +56,7 @@ int main(int argc, char* argv[]) {
 
         if (balls.size() < max_balls) {
             if (ball_clock.getElapsedTime().asSeconds() >= spawn_delay) {
-                float random_radius    = randomizer.generateRandomFloat(2.f, 25.f);
+                float random_radius    = randomizer.generateRandomFloat(2.f, 15.f);
                 sf::Color random_color = randomizer.generateRandomColor({100,255},{100,255},{100,255});
                 VerletBall newBall(random_radius, spawn_position, initial_speed, 0.f * (PI_f / 180.f));
                 newBall.setColor(random_color);
