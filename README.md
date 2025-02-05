@@ -1,0 +1,1 @@
+Minimum requirements: C++ 17, SFML 2.6, and CMake 3.10.
