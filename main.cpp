@@ -44,9 +44,6 @@ int main(int argc, char* argv[]) {
     sf::Clock fps_clock;
     sf::Clock total_time_clock;
 
-    // Create a single ball model (a template shape to reuse)
-    sf::CircleShape ballModel;
-
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -79,8 +76,8 @@ int main(int argc, char* argv[]) {
         fps = 1.0f / time_per_frame;
         std::string FPS           = std::to_string(static_cast<int>(fps)) + " FPS";
         std::string object_count  = std::to_string(static_cast<int>(balls.size())) + " objects";
-        std::string formattedTime = oss.str() + " sec"; // Convert the formatted string to a regular string
-        information_text.setString(FPS + "\n" + object_count + "\n" + formattedTime);
+        std::string formatted_time = oss.str() + " sec"; // Convert the formatted string to a regular string
+        information_text.setString(FPS + "\n" + object_count + "\n" + formatted_time);
         window.draw(information_text);
 
         window.display();
