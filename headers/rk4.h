@@ -32,12 +32,12 @@ public:
         state.velocity = velocity;
     }
 
-    [[nodiscard]] sf::Vector2f getPosition() const override 
+    [[nodiscard]] sf::Vector2f getPosition() const
     {
         return state.position;
     }
     
-    void updatePosition() override 
+    void updatePosition() 
     {
         Derivative a = Function(state, 0.f, Derivative());
         Derivative b = Function(state, deltaTime * 0.5f, a);

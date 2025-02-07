@@ -10,13 +10,18 @@ public:
         : Ball(radius, init_position, init_speed, angle)
     {}
 
-    void updatePosition() override {
+    void updatePosition() {
         // Explicit Euler Integration: Update velocity first
         // v' = v + a dt
         // x' = x + v dt
         velocity += acceleration * deltaTime;
         position += velocity * deltaTime;
         circleObject.setPosition(position);
+    }
+
+    [[nodiscard]] sf::Vector2f getPosition() const
+    {
+        return position;
     }
 
     [[nodiscard]] sf::Vector2f getVelocity() const

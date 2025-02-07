@@ -47,12 +47,7 @@ public:
     void setStepSize() {deltaTime = 1.f / 60.f;}
     void setStepSize(const float& dt) {deltaTime = dt;}
 
-    virtual void updatePosition() = 0;
-
-    [[nodiscard]] virtual sf::Vector2f getPosition() const
-    {
-        return circleObject.getPosition();
-    }
+    //virtual void updatePosition() = 0;
     
     [[nodiscard]] float getStepSize() const
     {

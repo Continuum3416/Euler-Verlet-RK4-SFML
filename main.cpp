@@ -12,14 +12,22 @@ constexpr int windowWidth  = 1000;
 constexpr int windowHeight = 1000;
 constexpr int frameRate    = 120;
 
+static sf::Color getRainbow(float t)
+{
+    const float r = sin(t);
+    const float g = sin(t + 0.33f * 2.0f * PI_f);
+    const float b = sin(t + 0.66f * 2.0f * PI_f);
+    return {static_cast<uint8_t>(255.0f * r * r),
+            static_cast<uint8_t>(255.0f * g * g),
+            static_cast<uint8_t>(255.0f * b * b)};
+}
+
 int main(int argc, char* argv[]) {
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Simple Physics Engine");
     window.setFramerateLimit(frameRate);
     EventHandler HandleEvent(window);
 
     // Utilities
-    sf::Font font;
-    font.loadFromFile("fonts/cmunrm.ttf");
     utils::Random randomizer;
 
     // Define walls: starting pos, length, thickness, angle
@@ -32,17 +40,17 @@ int main(int argc, char* argv[]) {
     const float spawn_delay          = 0.025f;
     const float initial_speed        = 10.f;              // Ball speed in m/s
     const sf::Vector2f spawn_position{40.f, 150.f};
-    const uint32_t max_balls         = 700;
+    const uint32_t max_balls         = 1200;
     balls.reserve(max_balls);
 
     // FPS calculations
+    sf::Font font;
+    font.loadFromFile("fonts/cmunrm.ttf");
     float fps = 0.0f, time_per_frame = 0.0f;
     sf::Text information_text("", font, 25);
 
     // Clocks
-    sf::Clock ball_clock;
-    sf::Clock fps_clock;
-    sf::Clock total_time_clock;
+    sf::Clock ball_clock, fps_clock, total_time_clock;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -53,20 +61,20 @@ int main(int argc, char* argv[]) {
 
         if (balls.size() < max_balls) {
             if (ball_clock.getElapsedTime().asSeconds() >= spawn_delay) {
-                float random_radius    = randomizer.generateRandomFloat(2.f, 20.f);
-                sf::Color random_color = randomizer.generateRandomColor({100,255},{100,255},{100,255});
-                VerletBall newBall(random_radius, spawn_position, initial_speed, 0.f * (PI_f / 180.f));
-                newBall.setColor(random_color);
-                balls.emplace_back(std::move(newBall));
+                const float random_radius    = randomizer.generateRandomFloat(2.f, 25.f);
+                float t = total_time_clock.getElapsedTime().asSeconds();
+                const sf::Color random_color = getRainbow(t);
+                balls.emplace_back(random_radius, spawn_position, initial_speed, 0.f * (PI_f / 180.f));
+                balls.back().setColor(random_color);
                 ball_clock.restart();
             }
         }
 
         window.clear(sf::Color::Black);
         HandleEvent.drawDragArrow();
-        HandleEvent.drawWall(walls);
+        //HandleEvent.drawWall(walls);
         HandleEvent.drawBall(balls);
-        Solver::resolveCollisions<VerletBall>(balls, walls);
+        Solver::resolveCollisions<VerletBall>(balls);
 
         // Display text
         float totalElapsedTime = total_time_clock.getElapsedTime().asSeconds();

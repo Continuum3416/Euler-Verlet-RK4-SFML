@@ -13,13 +13,18 @@ public:
         previous_position = position - velocity * deltaTime;
     }
 
-    void updatePosition() override {
+    void updatePosition() {
         // Verlet Integration: derived from the second derivative
         // x(n+1) = 2 * x(n) - x(n-1) + a * dt^2
         sf::Vector2f temp_position = position;
         position = 2.f * position - previous_position + acceleration * (deltaTime * deltaTime);
         previous_position = temp_position;
         circleObject.setPosition(position);
+    }
+
+    [[nodiscard]] sf::Vector2f getPosition() const
+    {
+        return position;
     }
 
     [[nodiscard]] sf::Vector2f getVelocity() const 
